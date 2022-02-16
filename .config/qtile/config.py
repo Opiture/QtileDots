@@ -29,6 +29,7 @@ import os
 import re
 import socket
 import subprocess
+from libqtile import qtile
 from typing import List  # noqa: F401
 from libqtile import layout, bar, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen, Rule
@@ -267,8 +268,12 @@ colors = init_colors()
 # WIDGETS FOR THE BAR
 
 
-def open_calcurse(qtile):
+def open_calcurse():
     qtile.cmd_spawn("alacritty -e calcurse")
+
+
+def open_htop():
+    qtile.cmd_spawn("alacritty -e htop")
 
 
 def init_widgets_defaults():
@@ -386,7 +391,13 @@ def init_widgets_list():
         #          core = "all",
         #          type = "box"
         #          ),
-        widget.TextBox(font="FontAwesome", text="", foreground=colors[5], fontsize=16),
+        widget.TextBox(
+            font="FontAwesome",
+            text="",
+            foreground=colors[5],
+            fontsize=16,
+            mouse_callbacks={"Button1": open_htop},
+        ),
         widget.CPU(
             font="Source Code Pro",
             format="{load_percent}%",
@@ -401,6 +412,7 @@ def init_widgets_list():
             background=colors[1],
             padding=0,
             fontsize=16,
+            mouse_callbacks={"Button1": open_htop},
         ),
         widget.Memory(
             font="Source Code Pro",
